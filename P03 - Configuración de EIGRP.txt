@@ -1,0 +1,120 @@
+P03 - Configuración de EIGRP
+
+!R1 
+enable
+configure terminal
+hostname R1
+interface g0/0
+ ip address 192.168.1.1 255.255.255.0 
+ no shutdown
+
+interface se0/0/0
+ ip address 192.168.2.1 255.255.255.252
+ clock rate 64000
+ no shutdown
+
+interface se0/0/1
+ ip address 209.165.200.225 255.255.255.252
+ no shutdown 
+end
+
+******************************************
+!R2
+enable
+configure terminal
+hostname R2
+interface g0/0
+ ip address 192.168.3.1 255.255.255.0
+ no shutdown
+
+interface se0/0/0
+ ip address 192.168.2.2 255.255.255.252
+no shutdown
+
+interface se0/0/1
+ ip address 192.168.4.1 255.255.255.252
+clock rate 64000
+no shutdown
+end
+
+
+******************************************
+!R3
+enable
+configure terminal
+hostname R3
+interface g0/0
+ ip address 192.168.5.1 255.255.255.0
+no shutdown
+
+interface se0/0/1
+ ip address 192.168.4.2 255.255.255.252
+no shutdown
+end
+
+******************************************
+
+! Configurar EIGRP 
+!R1
+enable
+configure terminal
+router eigrp 1
+ network 192.168.1.0 0.0.0.255
+ network 192.168.2.0 0.0.0.3
+ passive-interface gi0/0
+ passive-interface se0/0/1
+ no auto-summary
+end
+
+******************************************
+!R2
+enable
+configure terminal
+router eigrp 1
+ network 192.168.3.0 0.0.0.255
+ network 192.168.2.0 0.0.0.3
+ network 192.168.4.0 0.0.0.3
+ passive-interface gi0/0
+ no auto-summary
+end
+
+******************************************
+
+!R3
+enable
+configure terminal
+router eigrp 1
+ network 192.168.5.0 0.0.0.255
+ network 192.168.4.0 0.0.0.3
+ passive-interface gi0/0
+ no auto-summary
+end
+
+
+!Mascara comidín
+!calculo de wildcard mask
+
+255.255.255.255
+-
+255.255.255.0
+----------------
+0.   0.  0.  255
+
+
+255.255.255.255
+-
+255.255.255.252
+-----------------
+0.   0.   0.   3
+
+******************************************
+
+Configuracion y propagacion de la ruta estatica
+
+!R1
+enable 
+configure terminal
+ip route 0.0.0.0 0.0.0.0 se0/0/1
+router eigrp 1
+ redistribute static
+end

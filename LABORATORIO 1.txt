@@ -1,0 +1,83 @@
+Switch 1
+
+enable
+configure terminal
+vlan 10
+name User
+vlan 99
+name Administración
+exit
+interface f0/6
+no shutdown
+switchport mode access
+switchport access vlan 10
+interface f0/1
+no shutdown
+switchport mode trunk
+switchport trunk native vlan 99
+interface f0/3
+no shutdown
+switchport mode trunk
+switchport trunk native vlan 99
+interface vlan 99
+ip address 192.168.1.11 255.255.255.0
+exit
+spanning-tree vlan 1,10,99 root secondary
+spanning-tree mode rapid-pvst
+interface f0/6
+spanning-tree portfast
+spanning-tree bpduguard enable
+
+
+*************************************
+Switch 2
+
+enable
+configure terminal
+vlan 10
+name User
+vlan 99
+name Management
+exit
+interface f0/1
+no shutdown
+switchport mode trunk
+switchport trunk native vlan 99
+interface f0/3
+no shutdown
+switchport mode trunk
+switchport trunk native vlan 99
+interface vlan 99
+ip address 192.168.1.12 255.255.255.0
+exit
+spanning-tree vlan 1,10,99 root primary
+spanning-tree mode rapid-pvst
+
+*************************************
+Switch 3
+
+enable
+configure terminal
+vlan 10
+name User
+vlan 99
+name Management
+exit
+interface f0/18
+no shutdown
+switchport mode access
+switchport access vlan 10
+spanning-tree portfast
+spanning-tree bpduguard enable
+interface f0/1
+no shutdown
+switchport mode trunk
+switchport trunk native vlan 99
+interface f0/3
+no shutdown
+switchport mode trunk
+switchport trunk native vlan 99
+interface vlan 99
+ip address 192.168.1.13 255.255.255.0
+exit
+spanning-tree mode rapid-pvst

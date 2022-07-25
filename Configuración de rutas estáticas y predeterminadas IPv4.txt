@@ -1,0 +1,103 @@
+
+****************************************************
+CONFIGURACION DE RUTAS ESTATICAS Y PREDETERMINADAS
+
+****************************************************
+
+!R1
+enable
+configure terminal
+hostname R1
+interface g0/0
+ ip address 172.31.1.1 255.255.255.128
+ no shutdown
+
+interface se0/0/0
+ ip address 172.31.1.194 255.255.255.252
+clock rate 64000
+ no shutdown
+ end
+
+****************************************************
+
+!R2 
+enable
+configure terminal
+hostname R2
+
+interface g0/0
+ ip address 172.31.0.1 255.255.255.0
+ no shutdown
+
+interface se0/0/0
+ ip address 172.31.1.193 255.255.255.252
+no shutdown
+
+interface se0/0/1
+ ip address 172.31.1.197 255.255.255.252
+clock rate 64000
+no shutdown
+
+end
+
+****************************************************
+
+!R3
+enable
+configure terminal
+hostname R3
+interface g0/0
+ ip address 172.31.1.129 255.255.255.192
+ no shutdown
+
+interface se0/0/1
+ ip address 172.31.1.198 255.255.255.252
+ no shutdown
+
+end
+
+****************************************************
+!Configurar rutas estaticas recursivas en el R1
+
+!R1
+enable
+configure terminal
+ip route 172.31.0.0 255.255.255.0          172.31.1.193
+ip route 172.31.1.196   255.255.255.252    172.31.1.193
+ip route 172.31.1.128   255.255.255.192    172.31.1.193
+end
+
+****************************************************
+! COnfigurar rutas estaticas conectadas directamente
+!R2
+enable
+configure terminal
+ip route 172.31.1.0 255.255.255.128  se0/0/0
+ip route 172.31.1.128 255.255.255.192 se 0/0/1
+end
+
+****************************************************
+Configurar una ruta predeterminada en el R3
+!R3
+enable
+configure terminal
+ip route 0.0.0.0   0.0.0.0  se0/0/1
+end
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

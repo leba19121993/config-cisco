@@ -1,0 +1,50 @@
+Configuración de la seguridad de 
+puertos de un switch
+1)
+!S1
+enable 
+configure terminal
+hostname S1
+interface vlan1
+ ip address 10.10.10.2 255.255.255.0
+ no shutdown
+end
+
+*************************************
+2)
+Configurar la seguridad del puerto
+
+enable 
+configure terminal
+interface range fa0/1 - 2
+ switch port-security
+ 
+
+*************************************
+3)
+enable 
+configure terminal
+interface range fa0/1 - 2
+ switchport mode access 
+ switch port-security
+ switch port-security maximum 1
+ switch port-security mac-address sticky
+ switch port security violation restric
+
+***************************************
+
+4)
+
+enable 
+configure terminal
+interface range fa0/1 - 2
+ switchport mode access 
+ switch port-security
+ switch port-security maximum 1
+ switch port-security  mac-address sticky
+ switch port-security violation restric
+
+interface range fa0/3 - 24, gi0/1 - 2
+ shutdown
+end
+

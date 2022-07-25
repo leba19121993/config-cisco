@@ -1,0 +1,84 @@
+!Configuracion de SSH
+
+enable
+configure terminal
+hostname S1
+ interface vlan1
+ ip address 10.10.10.2 255.255.255.0
+ no shutdown
+end
+
+*************************************
+2)configurar contraseña
+
+enable
+configure terminal
+banner motd "Alto: Acceso solo a personal
+autorizado"
+line console 0
+ password cisco
+ login
+ 
+enable password class
+end
+
+*************************************
+3) configurar contraseña telnet
+
+enable
+configure terminal
+banner motd "Alto: Acceso solo a personal
+autorizado"
+line console 0
+ password cisco
+ login
+
+line vty 0 4
+ password cisco
+ login
+
+enable password class
+end
+*************************************
+4)encriptar contraseñas
+
+enable
+configure terminal
+ service password-encryption
+end
+
+*************************************
+5)
+!Cifrar las comunicaciones mediante SSH; Security Shell
+
+enable
+configure terminal
+!Configurar el nombre de dominio netacad.pka.
+ip domain-name netacad.pka
+
+!Generar las claves RSA con la longitud de clave
+!1024
+crypto key generate rsa
+
+
+*************************************
+6)!crear un usuareio administrador con "secreta"
+como contraseña secreta
+
+enable 
+configure terminal
+
+username admin secret c1$sc0
+
+line vty 0 4
+ login local
+ transport input ssh
+ no password cisco
+end
+
+enable
+configure terminal
+ip ssh authentication-retries 
+ip ssh time-out 
+ip ssh version 
+end

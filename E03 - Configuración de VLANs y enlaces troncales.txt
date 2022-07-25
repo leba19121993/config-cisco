@@ -1,0 +1,164 @@
+CREAR Y NOMBRAR LAS VLAN EN EL S1
+
+enable
+configure terminal
+hostname s1
+vlan 10
+ name Docentes/Personal
+vlan 20
+ name Estudiantes
+vlan 30
+ name Invitados
+ vlan 99
+ name Admin/Nativa
+end
+
+enable
+configure terminal
+hostname s2
+vlan 10
+ name Docentes/Personal
+vlan 20
+ name Estudiantes
+vlan 30
+ name Invitados
+ vlan 99
+ name Admin/Nativa
+end
+
+enable
+configure terminal
+hostname s3
+vlan 10
+ name Docentes/Personal
+vlan 20
+ name Estudiantes
+vlan 30
+ name Invitados
+ vlan 99
+ name Admin/Nativa
+end
+
+**************************************
+Asignar las vlan a los puertos activos en el
+s2 y s3
+
+enable
+configure terminal
+interface fa0/11
+ switchport mode access
+ switchport access vlan 10
+interface fa0/18
+switchport mode access
+ switchport access vlan 20
+interface fa0/6
+switchport mode access
+ switchport access vlan 30
+end
+
+**************************************
+
+Configurar el enlace troncal en el S1 y utilizar
+la Vlan 99 como VLAN nativa
+
+enable
+ configure terminal
+interface range gi0/1 - 2
+ switchport mode trunk  
+ switch trunk native vlan 99
+end
+
+**************************************
+Corregir la discrepancia de VLAn nativa
+en s2 y s3
+S2
+enable 
+configure terminal
+interface gi0/1
+ switchport trunk native vlan 99
+end
+
+S3
+enable 
+configure terminal
+interface gi0/2
+ switchport trunk native vlan 99
+end
+
+**************************************
+!Confi.guracion de Routing inter vlan en R1
+
+enable
+configure terminal
+hostname R1
+interface g0/0
+ no shutdown
+interface g0/0.10
+ encapsulation dot1Q 10
+ ip address 172.17.10.1 255.255.255.0
+
+interface g0/0.20
+ encapsulation dot1Q 20
+ ip address 172.17.20.1 255.255.255.0
+
+interface g0/0.30
+ encapsulation dot1Q 30
+ ip address 172.17.30.1 255.255.255.0
+
+interface g0/0.99
+ encapsulation dot1Q 99 native
+ ip address 172.17.99.1 255.255.255.0
+end
+
+
+**********************************
+Configurar puerto troncal en S1
+
+enable
+configure terminal
+interface f0/1
+ switchport mode trunk
+ switchport trunk native vlan 99
+end
+
+**********************************
+IP switch:SVI
+
+!S1
+enable
+configure terminal
+interface vlan 99
+ ip address 172.17.99.11 255.255.255.0
+ no shutdown
+ip default-gateway 172.17.99.1
+end
+
+S2
+enable
+configure terminal
+interface vlan 99
+ ip address 172.17.99.12 255.255.255.0
+ no shutdown
+ip default-gateway 172.17.99.1
+end
+
+S3
+enable
+configure terminal
+interface vlan 99
+ ip address 172.17.99.13 255.255.255.0
+ no shutdown
+ip default-gateway 172.17.99.1
+end
+
+
+
+
+
+
+
+
+
+
+
+

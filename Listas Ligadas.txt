@@ -1,0 +1,123 @@
+#include <iostream>
+using namespace std;
+typedef struct nodo
+{
+	int dato, valor, lista;
+	struct nodo* sig;
+};
+nodo* fin = NULL, * inicio = NULL;
+nodo* crea_nodo(int valor)
+{
+	nodo* nuevo_nodo = (nodo*)malloc(sizeof(nodo));
+	if (nuevo_nodo != NULL)
+	{
+		nuevo_nodo->dato = valor;
+		nuevo_nodo->sig = NULL;
+	}
+	return nuevo_nodo;
+}
+void menu();
+void crea_lista()
+{
+	inicio = crea_nodo(0);
+	fin = inicio;
+}
+void inserta(int valor)
+{
+	nodo* nuevoNodo = crea_nodo(valor);
+	if (inicio == NULL) {
+		crea_lista();
+		inicio->sig = nuevoNodo;
+		fin = fin->sig;
+	}
+	else {
+		fin->sig = nuevoNodo;
+		fin = fin->sig;
+		cout << "\tNumero " << valor << " insertado a la lista correctamente\n";
+	}
+	
+}
+void muestra_lista()
+{
+	if (inicio == NULL) {
+		crea_lista();
+	}
+	else {
+		nodo* aux = inicio->sig;
+		while (aux != NULL) {
+			cout << aux->dato << " -> ";
+			aux = aux->sig;
+		}
+		cout << "lista vacia" << endl << endl;
+		
+		
+	}
+}
+
+
+
+
+void busca(int b)
+{
+	int valor = 0;
+	if (inicio == NULL) {
+		crea_lista();
+	}
+	else {
+		nodo* aux = inicio->sig;
+		while (aux != NULL) {
+				if (b == aux->dato) {
+					cout << "Si existe el elemento " << b << " en la lista" << endl;
+					valor = 1;
+					break;
+				}
+			aux = aux->sig;
+		}
+	}
+	if (valor == 0)
+		cout << "NO existe el elemento " << b << " en la lista" << endl;
+}
+
+int main()
+{
+	void menu();
+	{
+		int lista,opcion, valor, busca;
+
+		do
+		{
+			cout << "\tIntroduce una opcion:.\n";
+			cout << "(1). Crear Lista\n";
+			cout << "(2). Insertar elementos a la Lista\n";
+			cout << "(3). Mostrar elementos de la lista\n";
+			cout << "(4). Buscar elementos de la lista\n";
+			cout << "(5). Salir\n";
+			cout << "Opcion";
+			cin >> opcion;
+
+			switch (opcion)
+			{
+			case 1:	cout << "Lista creada\n";
+				crea_lista();
+				break;
+			case 2:cout << "\nInserta valores a la lista:\n ";
+				  cin >> valor;
+				inserta(valor);
+				break;
+			case 3:muestra_lista();
+				break;
+			case 4: cout << " \nDigite un numero a buscar: ";
+				cin >> valor;
+				busca*(lista, valor);
+				break;
+
+
+
+			}
+			;
+
+		} while (opcion != 5);
+	} 
+}
+
+
